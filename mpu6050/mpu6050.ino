@@ -1,3 +1,8 @@
+/**
+ * SDA -> A4
+ * SCL -> A5
+**/
+
 #include <Adafruit_MPU6050.h>
 #include <Adafruit_Sensor.h>
 #include <Wire.h>
@@ -5,7 +10,7 @@
 Adafruit_MPU6050 mpu;
 
 void setup(void) {
-  Serial.begin(115200);
+  Serial.begin(19200);
   delay(200);
 
   pinMode(2, OUTPUT);
@@ -35,29 +40,46 @@ void setup(void) {
   delay(100);
 }
 
+float avg = 0.0;
+
+
 void loop() {
   digitalWrite(2, LOW);
-  /*
+  
+/*
   if(mpu.getMotionInterruptStatus()) {
     digitalWrite(2, HIGH);
     Serial.println("D");
     delay(1);
   }
-  */
+*/
 
   sensors_event_t a, g, temp;
   mpu.getEvent(&a, &g, &temp);
-  if (a.acceleration.z < 7.2) {
+  float data = a.acceleration.y;
+
+  if (data < -10.7) {
     digitalWrite(2, HIGH);
-    Serial.println(a.acceleration.z);
-    delay(5);
+    Serial.println(a.acceleration.y);
+    delay(100);
   }
 
-  //Serial.print(a.acceleration.z);
-  //Serial.print(" ");
-  //Serial.print(g.gyro.z);
-  //Serial.print(temp.temperature);
-  //Serial.println("");
- // delay(10);
+/*
+  Serial.print(millis());
+  Serial.print(",");
+  Serial.print(a.acceleration.x);
+  Serial.print(",");
+  Serial.print(a.acceleration.y);
+  Serial.print(",");
+  Serial.print(a.acceleration.z);
+  Serial.println("");
 
+
+  Serial.print(a.acceleration.z);
+  Serial.print(" ");
+  Serial.print(g.gyro.z);
+  Serial.print(temp.temperature);
+  Serial.println("");
+  delay(10);
+*/
 }
