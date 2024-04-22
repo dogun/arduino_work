@@ -58,7 +58,7 @@ void loop() {
   mpu.getEvent(&a, &g, &temp);
   float data = a.acceleration.y;
 
-  if (data < -10.7) {
+  if (data < -12) {
     digitalWrite(2, HIGH);
     Serial.println(a.acceleration.y);
     delay(100);
